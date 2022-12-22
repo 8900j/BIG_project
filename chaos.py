@@ -5,7 +5,7 @@ import numpy as np
 # import plotly.express as px
 # from shapely.geometry import Point, Polygon
 # import folium
-from streamlit_folium import st_folium
+# from streamlit_folium import st_folium
 # import geopandas as gpd
 # import geopy
 # from geopy.geocoders import Nominatim
@@ -14,7 +14,7 @@ from streamlit_folium import st_folium
 # from shapely.geometry import Point, Polygon, LineString
 # import matplotlib.pyplot as plt
 # import matplotlib
-import math
+# import math
 
 # 꽉 찬 화면
 st.set_page_config(layout="wide")
@@ -55,48 +55,49 @@ with tab1:
         a,b = st.columns([1,2])
         basic=pd.DataFrame({'단지명':tmp['단지명'],'전용면적(㎡)':tmp['전용면적'],'주소':tmp['주소']})
         a.dataframe(basic)
-        #지도
-        # 위도
-        home_lat = tmp['위도']
-        # 경도
-        home_lng = tmp['경도']
+#         #지도
+#         # 위도
+#         home_lat = tmp['위도']
+#         # 경도
+#         home_lng = tmp['경도']
         
-        for k in range(len(metro)):
-            if dt.loc[i, '지하철역'] == metro.loc[k, '역명']:
-                metro_station = metro.loc[k, '역명']
-                # print([metro.loc[i, '역사위치위도'], metro.loc[i, '역사위치경도']])
-                metro_lat = metro.loc[k,'역사위치위도']
-                metro_lng = metro.loc[k,'역사위치경도']
-                break
+#         for k in range(len(metro)):
+#             if dt.loc[i, '지하철역'] == metro.loc[k, '역명']:
+#                 metro_station = metro.loc[k, '역명']
+#                 # print([metro.loc[i, '역사위치위도'], metro.loc[i, '역사위치경도']])
+#                 metro_lat = metro.loc[k,'역사위치위도']
+#                 metro_lng = metro.loc[k,'역사위치경도']
+#                 break
                 
-        # 배경지도 map (center 위치)
-        baegyeong = folium.Figure(width=400, height=400)
-        map = folium.Map(location=[home_lat, home_lng],
-                         zoom_start=15).add_to(baegyeong)
-        # 지도 map에 Marker 추가하기
-        folium.Marker([home_lat, home_lng],
-                      tooltip = dt.iloc[i]['단지명'],
-                     ).add_to(map)
-        # 지하철역 marker 추가
-        folium.Marker(location=[metro_lat, metro_lng],
-                      tooltip = metro_station,
-                      zoom_start=15).add_to(map)
+#         # 배경지도 map (center 위치)
+#         baegyeong = folium.Figure(width=400, height=400)
+#         map = folium.Map(location=[home_lat, home_lng],
+#                          zoom_start=15).add_to(baegyeong)
+#         # 지도 map에 Marker 추가하기
+#         folium.Marker([home_lat, home_lng],
+#                       tooltip = dt.iloc[i]['단지명'],
+#                      ).add_to(map)
+#         # 지하철역 marker 추가
+#         folium.Marker(location=[metro_lat, metro_lng],
+#                       tooltip = metro_station,
+#                       zoom_start=15).add_to(map)
 
-        # 버스정류장 표시
-        # folium.Marker([bus_lat, bus_lng],
-        #               popup=)
-        # 500m 반경 원 추가하기
-        folium.Circle(
-            location=[home_lat, home_lng],
-            radius=500,
-            popup="반경 500m",
-            color="#3186cc",
-            fill=True,
-            fill_color="#3186cc",
-        ).add_to(map)
+#         # 버스정류장 표시
+#         # folium.Marker([bus_lat, bus_lng],
+#         #               popup=)
+#         # 500m 반경 원 추가하기
+#         folium.Circle(
+#             location=[home_lat, home_lng],
+#             radius=500,
+#             popup="반경 500m",
+#             color="#3186cc",
+#             fill=True,
+#             fill_color="#3186cc",
+#         ).add_to(map)
 
-        # call to render Folium map in Streamlit
-        b.st_data = st_folium(baegyeong, width=400, height=400)
+#         # call to render Folium map in Streamlit
+#         b.st_data = st_folium(baegyeong, width=400, height=400)
+
         # 2. 가격 정보(차트): 예측월세가격, 기존월세가격, 월수입차액
         m=['기존월세가격','예측월세가격']
         n=[int(tmp['기존월세가격'][i]),int(tmp['예측월세가격'][i])]
@@ -161,18 +162,18 @@ with tab2:
     # 입력 정보로 데이터프레임 input_df 만들기
     input_df=pd.DataFrame({'단지명':[name],'전용면적':[size],'층':[floor],'도로명주소':[address]})
 
-    # input_df에 위경도 컬럼 추가
-    if address:
-        geolocator = Nominatim(user_agent="GTA Lookup")
-        geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
-        location = geolocator.geocode(address)
-        lat = location.latitude
-        lon = location.longitude
-        input_df['위도']=lat
-        input_df['경도']=lon
-    else:
-        txt = '<p style="font-family:Malgun Gothic; color:cornflowerblue; font-size: 15px;">▲ 주소를 입력해주세요!</p>'
-        st.markdown(txt, unsafe_allow_html=True)
+#     # input_df에 위경도 컬럼 추가
+#     if address:
+#         geolocator = Nominatim(user_agent="GTA Lookup")
+#         geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
+#         location = geolocator.geocode(address)
+#         lat = location.latitude
+#         lon = location.longitude
+#         input_df['위도']=lat
+#         input_df['경도']=lon
+#     else:
+#         txt = '<p style="font-family:Malgun Gothic; color:cornflowerblue; font-size: 15px;">▲ 주소를 입력해주세요!</p>'
+#         st.markdown(txt, unsafe_allow_html=True)
 
     st.dataframe(input_df)
 
