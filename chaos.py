@@ -54,13 +54,13 @@ with tab1:
         basic=pd.DataFrame({'단지명':tmp['단지명'],'전용면적(㎡)':tmp['전용면적'],'주소':tmp['주소']})
         a.dataframe(basic)
         # 지도
-        tmp2=dt.iloc[[i]]
-        geolocator = Nominatim(user_agent="GTA Lookup")
-        geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
-        lat=[i for i in tmp2['위도']]
-        lon=[i for i in tmp2['경도']]
-        map_data = pd.DataFrame({'lat': lat, 'lon': lon})
-        b.map(map_data)
+#         tmp2=dt.iloc[[i]]
+#         geolocator = Nominatim(user_agent="GTA Lookup")
+#         geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
+#         lat=[i for i in tmp2['위도']]
+#         lon=[i for i in tmp2['경도']]
+#         map_data = pd.DataFrame({'lat': lat, 'lon': lon})
+#         b.map(map_data)
 
         # 2. 가격 정보(차트): 예측월세가격, 기존월세가격, 월수입차액
         m=['기존월세가격','예측월세가격']
