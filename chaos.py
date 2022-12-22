@@ -23,7 +23,8 @@ st.image('https://github.com/8900j/BIG_project/blob/main/JH.png?raw=true')
 
 # 데이터 가져오기
 dt = pd.read_csv('https://raw.githubusercontent.com/8900j/BIG_project/main/test_predict_complete_undummify.csv')
-
+metro = pd.read_csv('https://raw.githubusercontent.com/8900j/BIG_project/main/subway_re.csv')
+bus = pd.read_csv('https://raw.githubusercontent.com/8900j/BIG_project/main/JUNG_BUS.csv')
 # --------------------------------------------------------------------------------------------------------------------------------------------
 
 tab1, tab2 = st.tabs(['직원용 웹사이트','고객용 웹사이트'])
@@ -53,15 +54,48 @@ with tab1:
         a,b = st.columns([1,2])
         basic=pd.DataFrame({'단지명':tmp['단지명'],'전용면적(㎡)':tmp['전용면적'],'주소':tmp['주소']})
         a.dataframe(basic)
-        # 지도
-#         tmp2=dt.iloc[[i]]
-#         geolocator = Nominatim(user_agent="GTA Lookup")
-#         geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
-#         lat=[i for i in tmp2['위도']]
-#         lon=[i for i in tmp2['경도']]
-#         map_data = pd.DataFrame({'lat': lat, 'lon': lon})
-#         b.map(map_data)
+        #지도
+        # 위도
+        home_lat = tmp['위도']
+        # 경도
+        home_lng = tmp['경도']
+        
+        for k in range(len(metro)):
+            if dt.loc[i, '지하철역'] == metro.loc[k, '역명']:
+                metro_station = metro.loc[k, '역명']
+                # print([metro.loc[i, '역사위치위도'], metro.loc[i, '역사위치경도']])
+                metro_lat = metro.loc[k,'역사위치위도']
+                metro_lng = metro.loc[k,'역사위치경도']
+                break
+                
+        # 배경지도 map (center 위치)
+        baegyeong = folium.Figure(width=400, height=400)
+        map = folium.Map(location=[home_lat, home_lng],
+                         zoom_start=15).add_to(baegyeong)
+        # 지도 map에 Marker 추가하기
+        folium.Marker([home_lat, home_lng],
+                      tooltip = dt.iloc[i]['단지명'],
+                     ).add_to(map)
+        # 지하철역 marker 추가
+        folium.Marker(location=[metro_lat, metro_lng],
+                      tooltip = metro_station,
+                      zoom_start=15).add_to(map)
 
+        # 버스정류장 표시
+        # folium.Marker([bus_lat, bus_lng],
+        #               popup=)
+        # 500m 반경 원 추가하기
+        folium.Circle(
+            location=[home_lat, home_lng],
+            radius=500,
+            popup="반경 500m",
+            color="#3186cc",
+            fill=True,
+            fill_color="#3186cc",
+        ).add_to(map)
+
+        # call to render Folium map in Streamlit
+        b.st_data = st_folium(baegyeong, width=400, height=400)
         # 2. 가격 정보(차트): 예측월세가격, 기존월세가격, 월수입차액
         m=['기존월세가격','예측월세가격']
         n=[int(tmp['기존월세가격'][i]),int(tmp['예측월세가격'][i])]
