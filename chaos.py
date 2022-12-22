@@ -106,7 +106,7 @@ with tab1:
         a1,a2,a3=st.columns(3)
         with a1:
             st.markdown('**가격비교 차트**')
-            st.plotly_chart(fig)
+            # st.plotly_chart(fig)
         with a2:
             st.metric(label='기존월세가(만 원)', value=int(dt.iloc[i]['기존월세가격']))
             st.metric(label='예측월세가(만 원)', value=int(dt.iloc[i]['예측월세가격']))
