@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 # import plotly.express as px
 # from shapely.geometry import Point, Polygon
-import geopandas as gpd
+# import geopandas as gpd
 import geopy
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
